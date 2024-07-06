@@ -113,5 +113,7 @@ The script is tested on OCI compute instances using a shape with 2 OCPUs/32GB RA
 
 [ ] Add True Cache setup
 
+[ ] Clean up script
+
 # Disclaimer
 This is a test script. No support, no help, no nothing!
