@@ -5,7 +5,7 @@
 ```livelabs-brew.sh``` is the first init script.
 
 ## TL;DR
-Install script
+Execute as `opc` on an OCI compute instance with at least 100GB (the script will automatically extend the file system).
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/klazarz/livelabsbrew/main/livelabs-brew.sh)"
 ```
@@ -20,6 +20,7 @@ It creates the following setup:
   - Allows running Flask apps (on port 5000)
   - sqlcl installed
 - (optional) noVNC config
+- All containers autostart after server restart
 
 ## What is possible?
 After running the script you can do the following:
@@ -39,22 +40,23 @@ Oracle Sample Data schemas:
 Admin user with DBA role
 
 # Installation
-Connect to an OCI compute instance as `opc`.
+Execute as `opc` on an OCI compute instance with at least 100GB (the script will automatically extend the file system).
 
 ## Execute LiveLabs Brew
+
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/klazarz/livelabsbrew/main/livelabs-brew.sh)"
 ```
 
-Note: You need to restart the server after the script is finished to initialize the containers using systemd.
+Note: You need to restart the server after the script is finished to initialize the containers using `systemd`.
 
 ## Installation Details
 
 The script executes the following:
 
 1. Installation of 23ai prerequisites (in VM)
-2. JDK 17 (in VM)
-3. sqlcl  (in VM)
+2. `JDK 17` (in VM)
+3. `sqlcl`  (in VM)
 4. (optional) noVNC
 5. Prerequisites to run containers (`podman`, etc.)
 6. Container Jupyter Lab (container name: `jupol8`)
@@ -92,3 +94,11 @@ Flask
 jupyterlab-lsp
 jedi-language-server
 ```
+
+
+# Server config
+The script is tested on OCI compute instances using a shape with 2 OCPUs/32GB RAM and 180GB custom boot drive.
+The script takes approximately 40 minute to complete.
+
+# Disclaimer
+This is a test script. No support, no help, no nothing!
