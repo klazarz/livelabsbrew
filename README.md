@@ -103,15 +103,15 @@ The script is tested on OCI compute instances using a shape with 2 OCPUs/32GB RA
 
 
 # ToDo's
-[] Decide whether noVNC should be in there
+[ ] Decide whether noVNC should be in there
 
-[] Create a demo Jupyter notebook
+[ ] Create a demo Jupyter notebook
 
-[] Create a demo Flask app
+[ ] Create a demo Flask app
 
-[] Create a cheatsheet
+[ ] Create a cheatsheet
 
-[] Add True Cache setup
+[ ] Add True Cache setup
 
 # Disclaimer
 This is a test script. No support, no help, no nothing!
