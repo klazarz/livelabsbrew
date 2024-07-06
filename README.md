@@ -71,7 +71,7 @@ The script executes the following:
 ### Pre-installed Python Libraries
 Following libraries are pre-installed
 
-```Python
+```
 oracledb
 sentence-transformers
 oci
