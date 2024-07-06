@@ -36,5 +36,5 @@ Connect to an OCI compute instance as `opc`.
 
 Run:
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/klazarz/install.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/klazarz/livelabsbrew/main/livelabs-brew.sh)"
 ```
