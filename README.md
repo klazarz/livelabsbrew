@@ -50,7 +50,7 @@ Execute as `opc` on an OCI compute instance with at least 100GB (the script will
 
 Note: You need to restart the server after the script is finished to initialize the containers using `systemd`.
 The script takes approximately 30-35 minutes to complete.
-After restart of the server all containers are up in between 3-5 minutes.
+After restart of the server all containers are up in **under 3 minutes**.
 
 ## Installation Details
 
