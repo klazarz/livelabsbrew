@@ -101,5 +101,12 @@ jedi-language-server
 # Server config
 The script is tested on OCI compute instances using a shape with 2 OCPUs/32GB RAM and 180GB custom boot drive.
 
+
+# ToDo's
+[] Decide whether noVNC should be in there
+[] Create a demo Jupyter notebook
+[] Create a demo Flask app
+[] Create a cheatsheet
+
 # Disclaimer
 This is a test script. No support, no help, no nothing!
