@@ -4,6 +4,13 @@
 
 ```livelabs-brew.sh``` is the first init script.
 
+## TL;DR
+Install script
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/klazarz/livelabsbrew/main/livelabs-brew.sh)"
+```
+
+
 ## What does it do?
 It creates the following setup:
 - 23ai free in a container
@@ -16,15 +23,15 @@ It creates the following setup:
 
 ## What is possible?
 After running the script you can do the following:
-- Connect to DB Actions / APEX via <ip:8181>
-- Connect to Jupyter Lab via <ip:8888>
-  - Start Flask apps from Jupyter Lab on port 5000 <ip:5000>
-  - Connect to the database using `sqlcl` (Example: `sql hr/<password>@23aifree/freepdb1)
+- Connect to DB Actions / APEX via `server-ip:8181`
+- Connect to Jupyter Lab via `server-ip:8888`
+  - Start Flask apps from Jupyter Lab on port 5000 `server-ip:5000`
+  - Connect to the database using `sqlcl` from Terminal in Jupyter Lab (Example: `sql hr/<password>@23aifree/freepdb1`)
 
 ## DB Users
-All users are ORDS-enabled
+All users/schemas are ORDS-enabled
 
-Oracle Sample Data:
+Oracle Sample Data schemas:
 - HR
 - CO
 - SH
@@ -39,3 +46,49 @@ Connect to an OCI compute instance as `opc`.
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/klazarz/livelabsbrew/main/livelabs-brew.sh)"
 ```
 
+Note: You need to restart the server after the script is finished to initialize the containers using systemd.
+
+## Installation Details
+
+The script executes the following:
+
+1. Installation of 23ai prerequisites (in VM)
+2. JDK 17 (in VM)
+3. sqlcl  (in VM)
+4. (optional) noVNC
+5. Prerequisites to run containers (`podman`, etc.)
+6. Container Jupyter Lab (container name: `jupol8`)
+   1.  Python 3.12 and relevant libraries (see below for details))
+   2.  `npm` and LSP for several programming languages
+   3.  `sqlcl`
+7. Container 23ai free (container name: `23aifree`)
+8. Container ORDS + APEX (container name: `ords`)
+9. Container network name: `oraclenet`
+
+
+### Pre-installed Python Libraries
+Following libraries are pre-installed
+
+```Python
+oracledb
+sentence-transformers
+oci
+jupyterlab
+pandas
+setuptools
+scipy
+matplotlib
+scikit-learn
+langchain
+numpy
+onnxruntime
+onnxruntime-extensions
+onnx
+torch
+transformers
+sentencepiece
+spacy
+Flask
+jupyterlab-lsp
+jedi-language-server
+```
