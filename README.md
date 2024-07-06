@@ -12,7 +12,7 @@ It creates the following setup:
 - Jupyter Lab including LSPs for several languages.
   - Allows running Flask apps (on port 5000)
   - sqlcl installed
-
+- (optional) noVNC config
 
 ## What is possible?
 After running the script you can do the following:
@@ -34,7 +34,8 @@ Admin user with DBA role
 # Installation
 Connect to an OCI compute instance as `opc`.
 
-Run:
+## Execute LiveLabs Brew
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/klazarz/livelabsbrew/main/livelabs-brew.sh)"
 ```
+
