@@ -201,81 +201,81 @@ exit 0
 ####
 
 
-function novncsetup () {
+# function novncsetup () {
 
-printStep
+# printStep
 
-echoStatus "Prepare VM for LiveLabs"
+# echoStatus "Prepare VM for LiveLabs"
 
-rm -rf /tmp/ll-setup
-wget https://objectstorage.us-ashburn-1.oraclecloud.com/p/GOsnDGZTmd1hZsH5TdsrT8ePf8_099TbUyly6WZ8WZawpLagHMBpAOpXao4KTEPc/n/c4u02/b/hosted_workshops/o/stacks/setup-novnc-livelabs.zip -O /tmp/setup-novnc-livelabs.zip
-unzip -o /tmp/setup-novnc-livelabs.zip -d /tmp/ll-setup
-rm -f /tmp/setup-novnc-livelabs.zip
-cd /tmp/ll-setup
-chmod +x *.sh
-cat << 'EOF' | sudo ./setup-firstboot.sh | tee /tmp/setup-firstboot.log
-n
+# rm -rf /tmp/ll-setup
+# wget https://objectstorage.us-ashburn-1.oraclecloud.com/p/GOsnDGZTmd1hZsH5TdsrT8ePf8_099TbUyly6WZ8WZawpLagHMBpAOpXao4KTEPc/n/c4u02/b/hosted_workshops/o/stacks/setup-novnc-livelabs.zip -O /tmp/setup-novnc-livelabs.zip
+# unzip -o /tmp/setup-novnc-livelabs.zip -d /tmp/ll-setup
+# rm -f /tmp/setup-novnc-livelabs.zip
+# cd /tmp/ll-setup
+# chmod +x *.sh
+# cat << 'EOF' | sudo ./setup-firstboot.sh | tee /tmp/setup-firstboot.log
+# n
 
-n
-EOF
+# n
+# EOF
 
-####
-#### Check if setup-firstboot.sh was OK
-####
+# ####
+# #### Check if setup-firstboot.sh was OK
+# ####
 
-if ! id oracle >/dev/null 2>&1
-then
-  exitError "The 'oracle' user does not exist. Something went wrong.. run the script again.."
-fi
+# if ! id oracle >/dev/null 2>&1
+# then
+#   exitError "The 'oracle' user does not exist. Something went wrong.. run the script again.."
+# fi
 
-rm -f /tmp/setup-firstboot.log
-
-
+# rm -f /tmp/setup-firstboot.log
 
 
 
-####
-#### Run setup-novnc-livelabs.sh
-####
 
-printStep
 
-echoStatus "Setup novnc (YOU wanted it!)"
+# ####
+# #### Run setup-novnc-livelabs.sh
+# ####
 
-echo "oracle" | sudo ./setup-novnc-livelabs.sh | tee /tmp/setup-novnc-livelabs.log
-cd /home/opc
+# printStep
 
-####
-#### Check if setup-novnc-livelabs.sh was OK
-####
+# echoStatus "Setup novnc (YOU wanted it!)"
 
-if ! (sudo yum group list --installed | grep -q 'Server with GUI')
-then
-  exitError "The 'Server with GUI' yum group was not installed. Something went wrong.. run the script again.."
-fi
+# echo "oracle" | sudo ./setup-novnc-livelabs.sh | tee /tmp/setup-novnc-livelabs.log
+# cd /home/opc
 
-if ! sudo yum list installed gnome-shell-extension-desktop-icons > /dev/null 2>&1
-then
-  exitError "The 'gnome-shell-extension-desktop-icons' yum package was not installed. Something went wrong.. run the script again.."
-fi
+# ####
+# #### Check if setup-novnc-livelabs.sh was OK
+# ####
 
-rm -rf /tmp/ll-setup
-rm -f /tmp/setup-novnc-livelabs.log
+# if ! (sudo yum group list --installed | grep -q 'Server with GUI')
+# then
+#   exitError "The 'Server with GUI' yum group was not installed. Something went wrong.. run the script again.."
+# fi
 
-####
-#### Clean /etc/hosts
-####
+# if ! sudo yum list installed gnome-shell-extension-desktop-icons > /dev/null 2>&1
+# then
+#   exitError "The 'gnome-shell-extension-desktop-icons' yum package was not installed. Something went wrong.. run the script again.."
+# fi
 
-printStep
+# rm -rf /tmp/ll-setup
+# rm -f /tmp/setup-novnc-livelabs.log
 
-sudo sed -i '3d' /etc/hosts
+# ####
+# #### Clean /etc/hosts
+# ####
 
-}
+# printStep
 
-read -p "Do you want to install noVNC? (yes/no): " exec_novncsetup
-if [ "$exec_novncsetup" == "yes" ]; then
-  novncsetup
-fi
+# sudo sed -i '3d' /etc/hosts
+
+# }
+
+# read -p "Do you want to install noVNC? (yes/no): " exec_novncsetup
+# if [ "$exec_novncsetup" == "yes" ]; then
+#   novncsetup
+# fi
 
 
 

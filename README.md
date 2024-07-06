@@ -19,7 +19,7 @@ It creates the following setup:
 - Jupyter Lab including LSPs for several languages.
   - Allows running Flask apps (on port 5000)
   - sqlcl installed
-- (optional) noVNC config
+- (optional) noVNC config (currently commented out lines 204-278)
 - All containers autostart after server restart
 
 ## What is possible?
@@ -107,6 +107,7 @@ The script is tested on OCI compute instances using a shape with 2 OCPUs/32GB RA
 [] Create a demo Jupyter notebook
 [] Create a demo Flask app
 [] Create a cheatsheet
+[] Add True Cache setup
 
 # Disclaimer
 This is a test script. No support, no help, no nothing!
