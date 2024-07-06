@@ -69,6 +69,24 @@ The script executes the following:
 8. Container ORDS + APEX (container name: `ords`)
 9. Container network name: `oraclenet`
 
+Base images used from Oracle Container Registry
+- container-registry.oracle.com/database/ords:latest
+- container-registry.oracle.com/os/oraclelinux:8
+- container-registry.oracle.com/database/free:latest
+
+## Connect
+
+- Jupter Lab: ip:8888
+- DB Actions and APEX: ip:8181
+
+For APEX use the following login infos
+- Workspace: internal
+- User:      ADMIN
+- Password:  `Welcome_1`
+
+ORDS enabled users are: HR, CO, SH, and Admin. Password for all users is:
+
+
 
 ### Pre-installed Python Libraries
 Following libraries are pre-installed
