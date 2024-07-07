@@ -102,6 +102,7 @@ scipy
 matplotlib
 scikit-learn
 langchain
+langchain_community
 numpy
 onnxruntime
 onnxruntime-extensions
