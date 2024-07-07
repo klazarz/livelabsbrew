@@ -356,7 +356,7 @@ spacy
 ipython-sql
 Flask
 jupyterlab-lsp
-jedi-language-serveroracledb
+jedi-language-server
 EOF
 
 
