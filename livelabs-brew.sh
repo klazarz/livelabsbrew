@@ -398,7 +398,7 @@ sudo -u oracle wget https://download.oracle.com/otn_software/java/sqldeveloper/s
 
 cat << 'EOF' | sudo -u oracle tee  /home/oracle/Dockerfile > /dev/null
 FROM container-registry.oracle.com/os/oraclelinux:8
-RUN dnf -y install git nodejs python3.12 python3.12-requests python3.12-pip java-17-openjdk python3.12-setuptools python3.12-wheel libffi-devel openssl openssl-devel tk-devel xz-devel zlib-devel bzip2-devel readline-devel libuuid-devel ncurses-devel libaio sudo oracle-database-preinstall-23ai
+RUN dnf -y install git wget nodejs python3.12 python3.12-requests python3.12-pip java-17-openjdk python3.12-setuptools python3.12-wheel libffi-devel openssl openssl-devel tk-devel xz-devel zlib-devel bzip2-devel readline-devel libuuid-devel ncurses-devel libaio sudo oracle-database-preinstall-23ai
 EXPOSE 8888
 EXPOSE 5000
 USER oracle
