@@ -107,10 +107,13 @@ numpy
 onnxruntime
 onnxruntime-extensions
 onnx
+prettytable
+pyvis
 torch
 transformers
 sentencepiece
 spacy
+ipython-sql
 Flask
 jupyterlab-lsp
 jedi-language-server
