@@ -347,12 +347,14 @@ numpy
 onnxruntime
 onnxruntime-extensions
 onnx
+PIL
 prettytable
 pyvis
 torch
 transformers
 sentencepiece
 spacy
+requests
 ipython-sql
 Flask
 jupyterlab-lsp
