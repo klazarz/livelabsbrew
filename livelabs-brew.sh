@@ -291,10 +291,6 @@ echo Installing container stuff
 
 sudo dnf -y module install container-tools:ol8
 
-sudo -H pip3 install --upgrade pip
-
-pip3 install podman-compose --no-warn-script-location
-
 sudo loginctl enable-linger oracle
 
 sudo -u oracle mkdir -p /home/oracle/oradata
