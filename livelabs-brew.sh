@@ -347,7 +347,7 @@ numpy
 onnxruntime
 onnxruntime-extensions
 onnx
-PIL
+pillow
 prettytable
 pyvis
 torch
