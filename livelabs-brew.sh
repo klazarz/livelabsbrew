@@ -16,8 +16,13 @@
 
 set -eEo pipefail
 
-sudo -s systemctl stop firewalld 
-sudo -s systemctl disable firewalld
+# sudo -s systemctl stop firewalld 
+# sudo -s systemctl disable firewalld
+
+sudo firewall-cmd --permanent --zone=work --add-port=1521/tcp #Database
+sudo firewall-cmd --permanent --zone=work --add-port=8888/tcp #JupyterLabs
+sudo firewall-cmd --permanent --zone=work --add-port=8181/tcp #ORDS
+sudo firewall-cmd --permanent --zone=work --add-port=5000/tcp #Flask
 
 if [ -z "${BASH_VERSION}" -o "${BASH}" == "/bin/sh" ]
 then
@@ -199,86 +204,6 @@ exit 0
 ####
 #### Run setup-firstboot.sh
 ####
-
-
-# function novncsetup () {
-
-# printStep
-
-# echoStatus "Prepare VM for LiveLabs"
-
-# rm -rf /tmp/ll-setup
-# wget https://objectstorage.us-ashburn-1.oraclecloud.com/p/GOsnDGZTmd1hZsH5TdsrT8ePf8_099TbUyly6WZ8WZawpLagHMBpAOpXao4KTEPc/n/c4u02/b/hosted_workshops/o/stacks/setup-novnc-livelabs.zip -O /tmp/setup-novnc-livelabs.zip
-# unzip -o /tmp/setup-novnc-livelabs.zip -d /tmp/ll-setup
-# rm -f /tmp/setup-novnc-livelabs.zip
-# cd /tmp/ll-setup
-# chmod +x *.sh
-# cat << 'EOF' | sudo ./setup-firstboot.sh | tee /tmp/setup-firstboot.log
-# n
-
-# n
-# EOF
-
-# ####
-# #### Check if setup-firstboot.sh was OK
-# ####
-
-# if ! id oracle >/dev/null 2>&1
-# then
-#   exitError "The 'oracle' user does not exist. Something went wrong.. run the script again.."
-# fi
-
-# rm -f /tmp/setup-firstboot.log
-
-
-
-
-
-# ####
-# #### Run setup-novnc-livelabs.sh
-# ####
-
-# printStep
-
-# echoStatus "Setup novnc (YOU wanted it!)"
-
-# echo "oracle" | sudo ./setup-novnc-livelabs.sh | tee /tmp/setup-novnc-livelabs.log
-# cd /home/opc
-
-# ####
-# #### Check if setup-novnc-livelabs.sh was OK
-# ####
-
-# if ! (sudo yum group list --installed | grep -q 'Server with GUI')
-# then
-#   exitError "The 'Server with GUI' yum group was not installed. Something went wrong.. run the script again.."
-# fi
-
-# if ! sudo yum list installed gnome-shell-extension-desktop-icons > /dev/null 2>&1
-# then
-#   exitError "The 'gnome-shell-extension-desktop-icons' yum package was not installed. Something went wrong.. run the script again.."
-# fi
-
-# rm -rf /tmp/ll-setup
-# rm -f /tmp/setup-novnc-livelabs.log
-
-# ####
-# #### Clean /etc/hosts
-# ####
-
-# printStep
-
-# sudo sed -i '3d' /etc/hosts
-
-# }
-
-# read -p "Do you want to install noVNC? (yes/no): " exec_novncsetup
-# if [ "$exec_novncsetup" == "yes" ]; then
-#   novncsetup
-# fi
-
-
-
 
 
 
