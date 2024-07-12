@@ -244,6 +244,19 @@ else
   echo "Network 'oraclenet' already exists."
 fi
 
+#whenever you login as oracle, it automatically connects to the DB container
+cat << 'EOF' | sudo -u oracle tee /home/oracle/.bash_profile > /dev/null
+# .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+  . ~/.bashrc
+fi
+
+podman exec -it 23ai /bin/bash
+
+EOF
+
 
 
 ####
@@ -257,6 +270,11 @@ echo
 echo Installing Jupyter Labs and a lot of awesomeness
 ### Install common libraries for Python
 cat << 'EOF' | sudo -u oracle tee  /home/oracle/requirements.txt > /dev/null
+appnope
+asttokens
+blinker
+certifi
+cffi
 oracledb
 sentence-transformers
 oci
@@ -281,50 +299,101 @@ sentencepiece
 spacy
 requests
 ipython-sql
+IProgress
 Flask
 jupyterlab-lsp
 jedi-language-server
+
 EOF
 
 
-#demo app for JupyterLab
-cat << 'EOF' | sudo -u oracle tee  /home/oracle/app.py > /dev/null
-from flask import Flask
+# #demo app for JupyterLab
+# cat << 'EOF' | sudo -u oracle tee  /home/oracle/app.py > /dev/null
+# from flask import Flask
 
-app = Flask(__name__)
+# app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return "Hello, World!"
+# @app.route('/')
+# def home():
+#     return "Hello, World!"
 
-if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0")
-EOF
-
-
-cat << 'EOF' | sudo -u oracle tee /home/oracle/bash_profile > /dev/null
-# .bash_profile
-
-# Get the aliases and functions
-if [ -f ~/.bashrc ]; then
-  . ~/.bashrc
-fi
-
-export PATH=$HOME/sqlcl/bin:$PATH
+# if __name__ == '__main__':
+#     app.run(debug=True, host="0.0.0.0")
+# EOF
 
 
-# Aliases
-alias sql="/home/oracle/sqlcl/bin/sql"
-alias s="sqlplus / as sysdba"
-alias oh="cd $ORACLE_HOME"
-alias l="ls -la"
-EOF
+# cat << 'EOF' | sudo -u oracle tee /home/oracle/bash_profile > /dev/null
+# # .bash_profile
+
+# # Get the aliases and functions
+# if [ -f ~/.bashrc ]; then
+#   . ~/.bashrc
+# fi
+
+# export PATH=$HOME/.opt/sqlcl/bin:$PATH
+
+
+# # Aliases
+# alias sql="/home/oracle/.opt/sqlcl/bin/sql"
+# alias sqlplus="ssh host.containers.internal"
+# alias l="ls -la"
+# EOF
 
 
 
-cat << 'EOF' | sudo -u oracle tee /home/oracle/id_rsa.pub > /dev/null
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC5ekRF/HwtHZ4Lw/9xemtNN2vOwV3WgFNpRwbiH2qL3Pc0WH6L6MMIcYcey6gwmm8Tq4P2D5MXN53jf7i9v12oR4EYQhyd+s9hCawxmiHIWQmaclXlvCiTglTlE0IsIBVJAGvtNt6YPwvwps3oRWyV6aDokeE+M3jxDrL7PAJHH2xcPsrsuDwlT8zKcBVgZjvJlDiVCFWx45So0zOj7wOEWo5gDgepys+vN9G5QcQZoPP5YZGbZMdCtHWy568Xmn3f545CH0tGthFs1e02flPL0gm+QTffGlJwBovC4k9qaTGYtYfTePx6EBWvvTNEpVnJyDPkhbfFc9azsvhAOLUI+6Sj51/GQUf+KlyIx1lO3fFZMHiRB3v3T0jFTcZxSDJuRViAE2YRTMpFq7vpgKOHiHsl2fdRoU04Jtnzq+CmI2sc/MeKG2Z9drHg7VT5j0xaSr/Kh3nHFmfPz8ND5oCNU9TzDmoFJWiH532yLzlCkdUL927WW+mZHfvj1Z0p87s= 23aifree@livelabs
-EOF
+sudo -u oracle ssh-keygen -t rsa -f /home/oracle/.ssh/id_rsa -q -P ""
+sudo -u oracle bash -c "cat /home/oracle/.ssh/id_rsa.pub >> /home/oracle/.ssh/authorized_keys"
+sudo -u oracle cp /home/oracle/.ssh/id_rsa /home/oracle/
+
+# cat << 'EOF' | sudo -u oracle tee /home/oracle/id_rsa.pub > /dev/null
+# ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC5ekRF/HwtHZ4Lw/9xemtNN2vOwV3WgFNpRwbiH2qL3Pc0WH6L6MMIcYcey6gwmm8Tq4P2D5MXN53jf7i9v12oR4EYQhyd+s9hCawxmiHIWQmaclXlvCiTglTlE0IsIBVJAGvtNt6YPwvwps3oRWyV6aDokeE+M3jxDrL7PAJHH2xcPsrsuDwlT8zKcBVgZjvJlDiVCFWx45So0zOj7wOEWo5gDgepys+vN9G5QcQZoPP5YZGbZMdCtHWy568Xmn3f545CH0tGthFs1e02flPL0gm+QTffGlJwBovC4k9qaTGYtYfTePx6EBWvvTNEpVnJyDPkhbfFc9azsvhAOLUI+6Sj51/GQUf+KlyIx1lO3fFZMHiRB3v3T0jFTcZxSDJuRViAE2YRTMpFq7vpgKOHiHsl2fdRoU04Jtnzq+CmI2sc/MeKG2Z9drHg7VT5j0xaSr/Kh3nHFmfPz8ND5oCNU9TzDmoFJWiH532yLzlCkdUL927WW+mZHfvj1Z0p87s= 23aifree@livelabs
+# EOF
+
+# sudo -u oracle chmod 644 /home/oracle/id_rsa.pub
+
+
+# cat << 'EOF' | sudo -u oracle tee /home/oracle/id_rsa > /dev/null
+# -----BEGIN OPENSSH PRIVATE KEY-----
+# b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn
+# NhAAAAAwEAAQAAAYEAuXpERfx8LR2eC8P/cXprTTdrzsFd1oBTaUcG4h9qi9z3NFh+i+jD
+# CHGHHsuoMJpvE6uD9g+TFzed43+4vb9dqEeBGEIcnfrPYQmsMZohyFkJmnJV5bwok4JU5R
+# NCLCAVSQBr7TbemD8L8KbN6EVslemg6JHhPjN48Q6y+zwCRx9sXD7K7Lg8JU/MynAVYGY7
+# yZQ4lQhVseOUqNMzo+8DhFqOYA4HqcrPrzfRuUHEGaDz+WGRm2THQrR1suevF5p93+eOQh
+# 9LRrYRbNXtNn5Ty9IJvkE33xpScAaLwuJPamkxmLWH03j8ehAVr70zRKVZycgz5IW3xXPW
+# s7L4QDi1CPuko+dfxkFH/ipciMdZTt3xWTB4kQd7909IxU3GcUgybkVYgBNmEUzKRau76Y
+# Cjh4h7Jdn3UaFNOCbZ86vgpiNrHPzHihtmfXax4O1U+Y9MWkq/yod5xxZnz8/DQ+aAjVPU
+# 8w5qBSVoh+d9si85QpHVC/du1lvpmR3749WdKfO7AAAFkCsFwnorBcJ6AAAAB3NzaC1yc2
+# EAAAGBALl6REX8fC0dngvD/3F6a003a87BXdaAU2lHBuIfaovc9zRYfovowwhxhx7LqDCa
+# bxOrg/YPkxc3neN/uL2/XahHgRhCHJ36z2EJrDGaIchZCZpyVeW8KJOCVOUTQiwgFUkAa+
+# 023pg/C/CmzehFbJXpoOiR4T4zePEOsvs8AkcfbFw+yuy4PCVPzMpwFWBmO8mUOJUIVbHj
+# lKjTM6PvA4RajmAOB6nKz6830blBxBmg8/lhkZtkx0K0dbLnrxeafd/njkIfS0a2EWzV7T
+# Z+U8vSCb5BN98aUnAGi8LiT2ppMZi1h9N4/HoQFa+9M0SlWcnIM+SFt8Vz1rOy+EA4tQj7
+# pKPnX8ZBR/4qXIjHWU7d8VkweJEHe/dPSMVNxnFIMm5FWIATZhFMykWru+mAo4eIeyXZ91
+# GhTTgm2fOr4KYjaxz8x4obZn12seDtVPmPTFpKv8qHeccWZ8/Pw0PmgI1T1PMOagUlaIfn
+# fbIvOUKR1Qv3btZb6Zkd++PVnSnzuwAAAAMBAAEAAAGBAJREZfFgXU+fXmjfXAK1rrMCO5
+# 8CumWvHX6J9bmrDXwSvlZM65QiFE5amn4GpUN9IJAjypBXcOjdX8ytm9uq706HIm5m4wNy
+# rHZQyiK4qIrEikW5YmsMl48bX4vjckFdwEYkHSJ6e0RPGdddMDqdzKimIyfm/ZzAfsyMSI
+# 1HMjbyqqeu1n6W5BWbjgTBxoTSFLcWUojoKcDTQVIXyy8f8LrLvQaSEJQteQoDYBZsuTsX
+# jBBta31B+XucUH4ccL44k0pWSG1q2+k0xu4PlXr6jQZkjK9wjt/DZajGxTv6EA/uSWCRWQ
+# ZWe9cmpyrZGyHkYodkVbPoQZuo7mtsv/15OnWYoe1HRhgwttx1RCjqhaB1gx7R77WVa1UB
+# Zjq44IAZ2q6Hu5s+X2l/TZT1UZqXBfGxvCD4GtoFo7c052vMHwp3uoAOjQD66wBqXgWRUS
+# gC1diR1iXXmVhUIpzbd0roXod80vbnReiOyQHgtdC8fwj3VUjXubirOv/RmiFIIb3+cQAA
+# AMB0DdGc+wSCrd19NdKAqCxUa3YYVUKKEAolFoKL/FjgaxEWdDr+iqYWwed9JST6eOCopz
+# SYLxyY1JyT05dRmiVPRXc6D/txRglanIbFkMkkPmr7d9D0d1mNb5WGRJlPOGKl2VOq2bFN
+# +tQzBRffp9JgofAe5YhWaPV2cPnbV867jHVDOEAF06xa2IROcNuc7u87cLQ5t5gGop7xRP
+# 4RGf19NNaagPRDVrmdvZOHsN+zv/Om84D4dqE9cgarjZmjFnoAAADBAPQs3Qv7wBq+0YTX
+# lH5Ro4VWt7q56UyBbMgMA8ptlqvxuobOwu7PtJnFNNFHYcyrImqwatSHHmc+WViz4FZO4h
+# arLSkNyux9hBj2KkBLaaKTcW6lX7Kop2zkYzNwWqOtoiZbLhuerAgz4SwGSGpvdfUUQGbr
+# 2qZkGnPlpoHcq2J64+WMOWVg7BVUhrE7Tghbbwkqm+EEKiQVK2VOdLtpgExOs9Ldgxxci6
+# 1lMJAysHoeSTGa3zOy7CuPKyQopVXzmQAAAMEAwnW0mWv61pXMDC48mYGwihp+WWhxLqvj
+# kZsla567G+8xc83jkUPwNXZQKXZNVk1GfI8upa79gMYIWI/oia1ZRyOWGqmjUT75RlyrID
+# 2DXQQrhjpIAGFHXzPVk1rT5Vw8sLCCRFABlGnXOpi6kj5e7+aKbokySAfN99u0b4AU1t7s
+# 0/RocPzlVj87SafmEadudFMgrIkHA3tieilAO74CV1rHNI6QGKAK9uQriSYxaiUCRufkge
+# kvkX2L9PO+jXZzAAAAE2tsYXphcnpAa2xhemFyei1tYWMBAgMEBQYH
+# -----END OPENSSH PRIVATE KEY-----
+# EOF
+
+
 
 
 sudo -u oracle wget https://download.oracle.com/otn_software/java/sqldeveloper/sqlcl-latest.zip -O /home/oracle/sqlcl-latest.zip
@@ -346,12 +415,13 @@ COPY sqlcl-latest.zip /home/oracle/.opt/.
 RUN unzip /home/oracle/.opt/sqlcl-latest.zip
 RUN rm /home/oracle/.opt/sqlcl-latest.zip
 COPY requirements.txt .
-COPY app.py .
-COPY bash_profile /home/oracle/.bash_profile
 RUN mkdir -p /home/oracle/.ssh/
-
+COPY --chown=oracle:oinstall id_rsa /home/oracle/.ssh/.
+RUN chmod 700 /home/oracle/.ssh/
 RUN pip3.12 install -r requirements.txt
 RUN rm requirements.txt
+RUN wget https://c4u04.objectstorage.us-ashburn-1.oci.customer-oci.com/p/EcTjWk2IuZPZeNnD_fYMcgUhdNDIDA6rt9gaFj_WZMiL7VvxPBNMY60837hu5hga/n/c4u04/b/livelabsfiles/o/labfiles/assets.zip
+RUN unzip assets.zip -d /home/oracle/.
 RUN npm install pyright typescript-language-server unified-language-server vscode-css-languageserver-bin vscode-html-languageserver-bin vscode-json-languageserver-bin yaml-language-server sql-language-server
 CMD jupyter-lab --allow-root --ip 0.0.0.0 --port 8888 --no-browser --NotebookApp.token='' --NotebookApp.password=''
 EOF
@@ -397,16 +467,16 @@ echo Headliner: 23ai free + ORDS + APEX
 
 
 # not needed but I left it uncommented for now
-cat << 'EOF' | sudo -u oracle tee /home/oracle/.bash_profile > /dev/null
-# .bash_profile
-# Get the aliases and functions
-if [ -f ~/.bashrc ]; then
-  . ~/.bashrc
-fi
-export XDG_RUNTIME_DIR="/run/user/$UID"
-export DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus"
-alias s="podman exec -it 23aifree /bin/bash"
-EOF
+# cat << 'EOF' | sudo -u oracle tee /home/oracle/.bash_profile > /dev/null
+# # .bash_profile
+# # Get the aliases and functions
+# if [ -f ~/.bashrc ]; then
+#   . ~/.bashrc
+# fi
+# export XDG_RUNTIME_DIR="/run/user/$UID"
+# export DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus"
+# alias s="podman exec -it 23aifree /bin/bash"
+# EOF
 
 export ORAPOD="cd /home/oracle/"
 
@@ -620,6 +690,17 @@ IP_ADDRESS=$(hostname -I | awk '{print $1}')
 
 echo "SCRIPT EXECUTED SUCCESSFULLY"
 
+sudo rm -rf /home/oracle/23dock.tar
+sudo rm -rf /home/oracle/bash_profile
+sudo rm -rf /home/oracle/Dockerfile
+sudo rm -rf /home/oracle/requirements.txt
+sudo rm -rf /home/oracle/sqlcl-latest.zip
+sudo rm -rf /home/oracle/stage
+sudo rm -rf /home/oracle/ords_secrets
+sudo rm -rf /home/oracle/app.py
+sudo rm -rf /home/oracle/dba.sh
+sudo rm -rf /home/oracle/id_rsa
+sudo rm -rf /home/oracle/init.sql
 
 
 echo DONE! Reboot the server.
