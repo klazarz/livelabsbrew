@@ -353,7 +353,7 @@ RUN mkdir -p /home/oracle/.ssh/
 RUN pip3.12 install -r requirements.txt
 RUN rm requirements.txt
 RUN npm install pyright typescript-language-server unified-language-server vscode-css-languageserver-bin vscode-html-languageserver-bin vscode-json-languageserver-bin yaml-language-server sql-language-server
-CMD jupyter-lab --allow-root --ip 0.0.0.0 --port 8888 --no-browser --NotebookApp.token='' --NotebookApp.password=''
+CMD jupyter-lab --allow-root --ip 0.0.0.0 --port 8888 --no-browser 
 EOF
 
 export ORAPOD="cd /home/oracle/"
@@ -433,7 +433,7 @@ cat << 'EOF' | sudo -u oracle tee /home/oracle/ords_secrets/conn_string.txt > /d
 CONN_STRING=SYS/Welcome23ai@23aifree:1521/freepdb1
 EOF
 
-sudo -u oracle bash -c "$ORAPOD; podman run --rm -d --network oraclenet --name ords -v /home/oracle/ords_secrets/:/opt/oracle/variables:Z -v /home/oracle/ords_config/:/etc/ords/config/:Z -p 8181:8181 -p 27017:27017 container-registry.oracle.com/database/ords:latest"
+sudo -u oracle bash -c "$ORAPOD; podman run --rm -d --network oraclenet --name ords -v /home/oracle/ords_secrets/:/opt/oracle/variables:Z -v /home/oracle/ords_config/:/etc/ords/config/:Z -p 8181:8181 -p 27017:27017 container-registry.oracle.com/database/ords-developer:latest"
 
 #Sleep timer
 SLEEP_SECONDS=$((9 * 60)) # X minutes in seconds
@@ -469,7 +469,7 @@ EOF
 
 
 # Restart the ORDS container
-sudo -u oracle bash -c "$ORAPOD; podman run -d --rm --network oraclenet --name ords  -v /home/oracle/ords_config/:/etc/ords/config/:Z -p 8181:8181 -p 27017:27017 container-registry.oracle.com/database/ords:latest"
+sudo -u oracle bash -c "$ORAPOD; podman run -d --rm --network oraclenet --name ords  -v /home/oracle/ords_config/:/etc/ords/config/:Z -p 8181:8181 -p 27017:27017 container-registry.oracle.com/database/ords-developer:latest"
 
 
 
