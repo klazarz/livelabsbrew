@@ -302,29 +302,37 @@ if __name__ == '__main__':
 EOF
 
 
-cat << 'EOF' | sudo -u oracle tee /home/oracle/bash_profile > /dev/null
-# .bash_profile
+# cat << 'EOF' | sudo -u oracle tee /home/oracle/bash_profile > /dev/null
+# # .bash_profile
 
-# Get the aliases and functions
-if [ -f ~/.bashrc ]; then
-  . ~/.bashrc
-fi
+# # Get the aliases and functions
+# if [ -f ~/.bashrc ]; then
+#   . ~/.bashrc
+# fi
 
-export PATH=$HOME/sqlcl/bin:$PATH
+# export PATH=$HOME/sqlcl/bin:$PATH
 
 
-# Aliases
-alias sql="/home/oracle/sqlcl/bin/sql"
-alias s="sqlplus / as sysdba"
-alias oh="cd $ORACLE_HOME"
-alias l="ls -la"
+# # Aliases
+# alias sql="/home/oracle/sqlcl/bin/sql"
+# alias s="sqlplus / as sysdba"
+# alias oh="cd $ORACLE_HOME"
+# alias l="ls -la"
+# EOF
+
+
+
+cat << 'EOF' | sudo -u oracle tee /home/oracle/dba.sh > /dev/null
+# connect to db server
+ssh host.containers.internal
 EOF
 
+sudo -u oracle bash -c "chmod +x /home/oracle/dba.sh"
 
+sudo -u oracle ssh-keygen -t rsa -f /home/oracle/.ssh/id_rsa -q -P ""
+sudo -u oracle bash -c "cat /home/oracle/.ssh/id_rsa.pub >> /home/oracle/.ssh/authorized_keys"
+sudo -u oracle cp /home/oracle/.ssh/id_rsa /home/oracle/
 
-cat << 'EOF' | sudo -u oracle tee /home/oracle/id_rsa.pub > /dev/null
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC5ekRF/HwtHZ4Lw/9xemtNN2vOwV3WgFNpRwbiH2qL3Pc0WH6L6MMIcYcey6gwmm8Tq4P2D5MXN53jf7i9v12oR4EYQhyd+s9hCawxmiHIWQmaclXlvCiTglTlE0IsIBVJAGvtNt6YPwvwps3oRWyV6aDokeE+M3jxDrL7PAJHH2xcPsrsuDwlT8zKcBVgZjvJlDiVCFWx45So0zOj7wOEWo5gDgepys+vN9G5QcQZoPP5YZGbZMdCtHWy568Xmn3f545CH0tGthFs1e02flPL0gm+QTffGlJwBovC4k9qaTGYtYfTePx6EBWvvTNEpVnJyDPkhbfFc9azsvhAOLUI+6Sj51/GQUf+KlyIx1lO3fFZMHiRB3v3T0jFTcZxSDJuRViAE2YRTMpFq7vpgKOHiHsl2fdRoU04Jtnzq+CmI2sc/MeKG2Z9drHg7VT5j0xaSr/Kh3nHFmfPz8ND5oCNU9TzDmoFJWiH532yLzlCkdUL927WW+mZHfvj1Z0p87s= 23aifree@livelabs
-EOF
 
 
 sudo -u oracle wget https://download.oracle.com/otn_software/java/sqldeveloper/sqlcl-latest.zip -O /home/oracle/sqlcl-latest.zip
@@ -335,26 +343,56 @@ FROM container-registry.oracle.com/os/oraclelinux:8
 RUN dnf -y install git wget nodejs python3.12 python3.12-requests python3.12-pip java-17-openjdk python3.12-setuptools python3.12-wheel libffi-devel openssl openssl-devel tk-devel xz-devel zlib-devel bzip2-devel readline-devel libuuid-devel ncurses-devel libaio sudo oracle-database-preinstall-23ai
 EXPOSE 8888
 EXPOSE 5000
+#COPY mongodb-org-7.0.repo /etc/yum.repos.d/.
+#RUN sudo yum install -y mongodb-mongosh
 USER oracle
 WORKDIR /home/oracle
 RUN mkdir -p /home/oracle/.opt/
-#RUN echo password:password | chpasswd
 RUN python3.12 -m venv /home/oracle/.opt/pyenv
 RUN source /home/oracle/.opt/pyenv/bin/activate
 ENV PATH="/home/oracle/.local/bin:/home/oracle/.opt/pyenv/bin:/home/oracle/.opt/sqlcl/bin:$PATH"
-COPY sqlcl-latest.zip /home/oracle/.opt/.
-RUN unzip /home/oracle/.opt/sqlcl-latest.zip
-RUN rm /home/oracle/.opt/sqlcl-latest.zip
+COPY sqlcl-latest.zip .
+RUN unzip sqlcl-latest.zip -d /home/oracle/.opt/. 
+RUN rm sqlcl-latest.zip
 COPY requirements.txt .
-COPY app.py .
-COPY bash_profile /home/oracle/.bash_profile
+COPY dba.sh /home/oracle/dba.sh
 RUN mkdir -p /home/oracle/.ssh/
-
+COPY --chown=oracle:oinstall id_rsa /home/oracle/.ssh/.
+RUN chmod 700 /home/oracle/.ssh/
 RUN pip3.12 install -r requirements.txt
 RUN rm requirements.txt
+RUN wget https://c4u04.objectstorage.us-ashburn-1.oci.customer-oci.com/p/EcTjWk2IuZPZeNnD_fYMcgUhdNDIDA6rt9gaFj_WZMiL7VvxPBNMY60837hu5hga/n/c4u04/b/livelabsfiles/o/labfiles/assets.zip
+RUN unzip assets.zip -d /home/oracle/.
+RUN rm assets.zip
 RUN npm install pyright typescript-language-server unified-language-server vscode-css-languageserver-bin vscode-html-languageserver-bin vscode-json-languageserver-bin yaml-language-server sql-language-server
 CMD jupyter-lab --allow-root --ip 0.0.0.0 --port 8888 --no-browser 
 EOF
+
+
+# cat << 'EOF' | sudo -u oracle tee  /home/oracle/Dockerfile > /dev/null
+# FROM container-registry.oracle.com/os/oraclelinux:8
+# RUN dnf -y install git wget nodejs python3.12 python3.12-requests python3.12-pip java-17-openjdk python3.12-setuptools python3.12-wheel libffi-devel openssl openssl-devel tk-devel xz-devel zlib-devel bzip2-devel readline-devel libuuid-devel ncurses-devel libaio sudo oracle-database-preinstall-23ai
+# EXPOSE 8888
+# EXPOSE 5000
+# USER oracle
+# WORKDIR /home/oracle
+# RUN mkdir -p /home/oracle/.opt/
+# RUN python3.12 -m venv /home/oracle/.opt/pyenv
+# RUN source /home/oracle/.opt/pyenv/bin/activate
+# ENV PATH="/home/oracle/.local/bin:/home/oracle/.opt/pyenv/bin:/home/oracle/.opt/sqlcl/bin:$PATH"
+# COPY sqlcl-latest.zip /home/oracle/.opt/.
+# RUN unzip /home/oracle/.opt/sqlcl-latest.zip
+# RUN rm /home/oracle/.opt/sqlcl-latest.zip
+# COPY requirements.txt .
+# COPY app.py .
+# COPY bash_profile /home/oracle/.bash_profile
+# RUN mkdir -p /home/oracle/.ssh/
+
+# RUN pip3.12 install -r requirements.txt
+# RUN rm requirements.txt
+# RUN npm install pyright typescript-language-server unified-language-server vscode-css-languageserver-bin vscode-html-languageserver-bin vscode-json-languageserver-bin yaml-language-server sql-language-server
+# CMD jupyter-lab --allow-root --ip 0.0.0.0 --port 8888 --no-browser 
+# EOF
 
 export ORAPOD="cd /home/oracle/"
 
@@ -632,6 +670,17 @@ EOF
 
 echo "SCRIPT EXECUTED SUCCESSFULLY"
 
+
+sudo rm -rf /home/oracle/bash_profile
+sudo rm -rf /home/oracle/Dockerfile
+sudo rm -rf /home/oracle/requirements.txt
+sudo rm -rf /home/oracle/sqlcl-latest.zip
+sudo rm -rf /home/oracle/stage
+sudo rm -rf /home/oracle/ords_secrets
+sudo rm -rf /home/oracle/app.py
+sudo rm -rf /home/oracle/dba.sh
+sudo rm -rf /home/oracle/id_rsa
+sudo rm -rf /home/oracle/init.sql
 
 
 echo DONE! PLEASE REBOOT SERVER.
