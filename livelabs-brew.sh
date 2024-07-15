@@ -446,17 +446,17 @@ printStep
 echo Headliner: 23ai free + ORDS + APEX
 
 
-# not needed but I left it uncommented for now
-cat << 'EOF' | sudo -u oracle tee /home/oracle/.bash_profile > /dev/null
-# .bash_profile
-# Get the aliases and functions
-if [ -f ~/.bashrc ]; then
-  . ~/.bashrc
-fi
-export XDG_RUNTIME_DIR="/run/user/$UID"
-export DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus"
-alias s="podman exec -it 23aifree /bin/bash"
-EOF
+# # not needed but I left it uncommented for now
+# cat << 'EOF' | sudo -u oracle tee /home/oracle/.bash_profile > /dev/null
+# # .bash_profile
+# # Get the aliases and functions
+# if [ -f ~/.bashrc ]; then
+#   . ~/.bashrc
+# fi
+# export XDG_RUNTIME_DIR="/run/user/$UID"
+# export DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus"
+# alias s="podman exec -it 23aifree /bin/bash"
+# EOF
 
 export ORAPOD="cd /home/oracle/"
 
