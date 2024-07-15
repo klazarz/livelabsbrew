@@ -13,9 +13,6 @@ Execute as `opc` on an OCI compute instance with at least 100GB (the script will
 ### Note:
 Please reboot the server once the script is finished.
 Login as opc to see the URL + token for JupyerLabs.
-Replace the URL with the public IP of your instance.
-
-
 
 Or run the following as `opc` user:
 
