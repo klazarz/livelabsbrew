@@ -622,9 +622,10 @@ echo "SCRIPT EXECUTED SUCCESSFULLY"
 
 
 
-echo DONE! Reboot the server.
+echo DONE! PLEASE REBOOT SERVER.
 echo --------------------------
 echo Jupter Lab: ip:8888
+echo Please run podman logs jupol8 to find the URL + token for JupyterLab after reboot
 echo DB Actions and APEX: ip:8181
 echo --------------------------
 echo For APEX use the following login infos
@@ -635,11 +636,11 @@ echo --------------------------
 echo ORDS enabled users are: HR, CO, SH, and Admin. Password for all users is: Welcome23ai
 echo --------------------------
 
-#Sleep timer
-SLEEP_SECONDS=$((30)) #  seconds
-echo "The server will reboot in..."
-countdown $SLEEP_SECONDS
-sudo reboot now
+# #Sleep timer
+# SLEEP_SECONDS=$((30)) #  seconds
+# echo "The server will reboot in..."
+# countdown $SLEEP_SECONDS
+# sudo reboot now
 
 exit 0
 
