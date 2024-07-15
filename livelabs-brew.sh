@@ -625,7 +625,7 @@ fi
 
 # User specific environment and startup programs
 echo IP and token for JupyterLabs. Replace IP with public IP of instance:
-sudo -u oracle bash -c "cd /home/oracle; podman logs jupol8 2>&1 | sed -n 's/.*\(http:\/\/127.0.0.1[^ ]*\).*/\1/p' | head -n 1"
+sudo -u oracle bash -c "public_ip=\$(curl -s ifconfig.me);cd /home/oracle;podman logs jupol8 2>&1 | sed -n 's/.*\(http:\/\/127.0.0.1[^ ]*\).*/\1/p' | head -n 1 | sed \"s/127.0.0.1/\$public_ip/\""
 
 EOF
 

@@ -20,7 +20,7 @@ Replace the URL with the public IP of your instance.
 Or run the following as `opc` user:
 
 ```bash
-sudo -u oracle bash -c "cd /home/oracle; podman logs jupol8 2>&1 | sed -n 's/.*\(http:\/\/127.0.0.1[^ ]*\).*/\1/p' | head -n 1"
+sudo -u oracle bash -c "public_ip=\$(curl -s ifconfig.me);cd /home/oracle;podman logs jupol8 2>&1 | sed -n 's/.*\(http:\/\/127.0.0.1[^ ]*\).*/\1/p' | head -n 1 | sed \"s/127.0.0.1/\$public_ip/\""
 ```
 
 **Replace 127.0.0.1 with the IP of your instance**
