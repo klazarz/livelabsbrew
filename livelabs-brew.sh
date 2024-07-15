@@ -244,6 +244,18 @@ else
   echo "Network 'oraclenet' already exists."
 fi
 
+#whenever you login as oracle, it automatically connects to the DB container
+cat << 'EOF' | sudo -u oracle tee /home/oracle/.bash_profile > /dev/null
+# .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+  . ~/.bashrc
+fi
+
+podman exec -it 23ai /bin/bash
+
+EOF
 
 
 ####
