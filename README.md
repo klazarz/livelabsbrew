@@ -12,9 +12,12 @@ Execute as `opc` on an OCI compute instance with at least 100GB (the script will
 
 ### Note:
 Please reboot the server once the script is finished.
-You need to receive the JupyterLab token to login.
+Login as opc to see the URL + token for JupyerLabs.
+Replace the URL with the public IP of your instance.
 
-Run the following as `opc` user:
+
+
+Or run the following as `opc` user:
 
 ```bash
 sudo -u oracle bash -c "cd /home/oracle; podman logs jupol8 2>&1 | sed -n 's/.*\(http:\/\/127.0.0.1[^ ]*\).*/\1/p' | head -n 1"
