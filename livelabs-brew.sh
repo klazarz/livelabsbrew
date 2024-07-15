@@ -615,7 +615,19 @@ echo ""
 
 IP_ADDRESS=$(hostname -I | awk '{print $1}')
 
+cat << 'EOF' | tee /home/opc/.bash_profile > /dev/null
+# .bash_profile
 
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+fi
+
+# User specific environment and startup programs
+echo IP and token for JupyterLabs. Replace IP with public IP of instance:
+sudo -u oracle bash -c "cd /home/oracle; podman logs jupol8 2>&1 | sed -n 's/.*\(http:\/\/127.0.0.1[^ ]*\).*/\1/p' | head -n 1"
+
+EOF
 
 
 echo "SCRIPT EXECUTED SUCCESSFULLY"
