@@ -637,7 +637,7 @@ echo "SCRIPT EXECUTED SUCCESSFULLY"
 echo DONE! PLEASE REBOOT SERVER.
 echo --------------------------
 echo Jupter Lab: ip:8888
-echo Please run podman logs jupol8 to find the URL + token for JupyterLab after reboot
+echo Login after reboot as opc to find the URL + token for JupyterLab after reboot
 echo DB Actions and APEX: ip:8181
 echo --------------------------
 echo For APEX use the following login infos
